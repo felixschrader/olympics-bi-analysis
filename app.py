@@ -19,14 +19,15 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-    --gold: #C9A84C;
-    --silver: #A8A9AD;
-    --bronze: #CD7F32;
-    --bg: #0A0A0A;
-    --surface: #141414;
-    --surface2: #1E1E1E;
-    --text: #EDEDEE;
-    --muted: #6B6B6B;
+    --gold: #B8860B;
+    --silver: #707070;
+    --bronze: #8B4513;
+    --bg: #F8F6F1;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE6;
+    --text: #1A1A1A;
+    --muted: #888888;
+    --border: #E0D9CE;
 }
 
 html, body, [class*="css"] {
@@ -36,13 +37,13 @@ html, body, [class*="css"] {
 }
 
 .main { background-color: var(--bg); }
-section[data-testid="stSidebar"] { background-color: var(--surface); border-right: 1px solid #2a2a2a; }
+section[data-testid="stSidebar"] { background-color: var(--surface); border-right: 1px solid var(--border); }
 
 h1, h2, h3 { font-family: 'Bebas Neue', cursive; letter-spacing: 2px; }
 
 .metric-card {
-    background: var(--surface2);
-    border: 1px solid #2a2a2a;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 20px 24px;
     text-align: center;
@@ -82,9 +83,9 @@ h1, h2, h3 { font-family: 'Bebas Neue', cursive; letter-spacing: 2px; }
     margin: 24px 0;
 }
 
-.stSelectbox > div > div { background-color: var(--surface2) !important; border-color: #2a2a2a !important; }
+.stSelectbox > div > div { background-color: var(--surface) !important; border-color: var(--border) !important; }
 .stSlider > div { color: var(--text); }
-div[data-testid="stMetric"] { background: var(--surface2); border-radius: 10px; padding: 12px; border: 1px solid #2a2a2a; }
+div[data-testid="stMetric"] { background: var(--surface); border-radius: 10px; padding: 12px; border: 1px solid var(--border); }
 div[data-testid="stMetric"] label { color: var(--muted) !important; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
 div[data-testid="stMetric"] div[data-testid="stMetricValue"] { color: var(--gold); font-family: 'Bebas Neue', cursive; font-size: 2rem; }
 
@@ -96,15 +97,15 @@ div[data-testid="stMetric"] div[data-testid="stMetricValue"] { color: var(--gold
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
-    background: #1E1E1E;
-    border: 1px solid #2a2a2a;
-    color: #6B6B6B;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
     margin: 2px;
 }
 .nav-pill.active {
     background: var(--gold);
     border-color: var(--gold);
-    color: #000;
+    color: #fff;
 }
 
 .section-header {
@@ -112,7 +113,7 @@ div[data-testid="stMetric"] div[data-testid="stMetricValue"] { color: var(--gold
     font-size: 1.5rem;
     letter-spacing: 3px;
     color: var(--gold);
-    border-bottom: 1px solid #2a2a2a;
+    border-bottom: 1px solid var(--border);
     padding-bottom: 8px;
     margin-bottom: 20px;
 }
@@ -200,24 +201,28 @@ HOST_COUNTRIES = {
     1992:'ESP',1996:'USA',2000:'AUS',2004:'GRE',2008:'CHN',2012:'GBR',2016:'BRA',
 }
 
-PLOTLY_TEMPLATE = dict(
-    layout=dict(
-        paper_bgcolor='#0A0A0A',
-        plot_bgcolor='#141414',
-        font=dict(color='#EDEDEE', family='Inter'),
-        title_font=dict(color='#C9A84C', family='Bebas Neue', size=18),
-        xaxis=dict(gridcolor='#2a2a2a', zerolinecolor='#2a2a2a'),
-        yaxis=dict(gridcolor='#2a2a2a', zerolinecolor='#2a2a2a'),
-        legend=dict(bgcolor='#141414', bordercolor='#2a2a2a', borderwidth=1),
-        margin=dict(t=60, b=40, l=40, r=20),
-    )
+_BASE_LAYOUT = dict(
+    paper_bgcolor='#F8F6F1',
+    plot_bgcolor='#FFFFFF',
+    font=dict(color='#1A1A1A', family='Inter'),
+    title_font=dict(color='#B8860B', family='Bebas Neue', size=18),
+    legend=dict(bgcolor='#FFFFFF', bordercolor='#E0D9CE', borderwidth=1),
+    margin=dict(t=60, b=40, l=40, r=20),
 )
+_AX = dict(gridcolor='#E0D9CE', zerolinecolor='#E0D9CE')
+PLOTLY_TEMPLATE = dict(layout=_BASE_LAYOUT)  # kept for reference
 
-GOLD = '#C9A84C'
+def _layout(fig, **kw):
+    """Apply base layout, injecting axis styles unless overridden."""
+    kw.setdefault('xaxis', _AX)
+    kw.setdefault('yaxis', _AX)
+    fig.update_layout(**_BASE_LAYOUT, **kw)
+
+GOLD = '#B8860B'
 SILVER = '#A8A9AD'
 BRONZE = '#CD7F32'
 ORANGE = '#E07B39'
-GRAY = '#3A3A3A'
+GRAY = '#CCCCCC'
 
 # ── Data Loading ──────────────────────────────────────────────────────────────
 @st.cache_data
@@ -264,7 +269,7 @@ with st.sidebar:
     sex_code = None if sex_filter == "Alle" else sex_filter[8]
 
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-    st.markdown('<div style="color:#6B6B6B;font-size:0.75rem">Daten: 1896 – 2016 · Sommer</div>', unsafe_allow_html=True)
+    st.markdown('<div style="color:#888888;font-size:0.75rem">Daten: 1896 – 2016 · Sommer</div>', unsafe_allow_html=True)
 
 # Filter
 dff = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
@@ -303,7 +308,7 @@ if page == "🏠 Übersicht":
             line=dict(color=GOLD, width=2),
             mode='lines+markers', marker=dict(size=5, color=GOLD),
         ))
-        fig.update_layout(**PLOTLY_TEMPLATE['layout'], height=300,
+        _layout(fig, height=300,
                           title="Teilnehmer (gefiltert)")
         st.plotly_chart(fig, use_container_width=True)
 
@@ -318,7 +323,7 @@ if page == "🏠 Übersicht":
             text=top_nations['punkte'].astype(int),
             textposition='outside', textfont=dict(color='#EDEDEE', size=11),
         ))
-        fig2.update_layout(**PLOTLY_TEMPLATE['layout'], height=300,
+        _layout(fig2, height=300,
                            yaxis=dict(autorange='reversed', gridcolor='#2a2a2a'),
                            title="Performance Score (Gold=3, Silber=2, Bronze=1)")
         st.plotly_chart(fig2, use_container_width=True)
@@ -334,7 +339,7 @@ if page == "🏠 Übersicht":
             showscale=False,
         ),
     ))
-    fig3.update_layout(**PLOTLY_TEMPLATE['layout'], height=280)
+    _layout(fig3, height=280)
     st.plotly_chart(fig3, use_container_width=True)
 
 
@@ -388,9 +393,7 @@ elif page == "💪 Athletenprofil":
                 boxmean=False, fillcolor='rgba(201,168,76,0.4)',
             ), row=1, col=i)
 
-        fig.update_layout(
-            **PLOTLY_TEMPLATE['layout'],
-            height=450,
+        _layout(fig, height=450,
             title=f"Verteilung: {sport} · Medaillengewinner vs. Rest",
             boxmode='group',
         )
@@ -457,8 +460,7 @@ elif page == "⚖️ Körper & Medaillen":
                         marker_color=col, showlegend=(sport_name == top_sports[0]),
                         line_color=col, fillcolor=col.replace('#', 'rgba(').rstrip(')')+',0.4)',
                     ))
-            fig.update_layout(
-                **PLOTLY_TEMPLATE['layout'], height=500,
+            _layout(fig, height=500,
                 title="Altersunterschied Gewinner vs. Nicht-Gewinner (Top 15 Sportarten)",
                 xaxis_title="", yaxis_title="Alter",
                 boxmode='group',
@@ -492,8 +494,7 @@ elif page == "⚖️ Körper & Medaillen":
                         marker_color=col, showlegend=(sport_name == top_sports_h[0]),
                         line_color=col,
                     ))
-            fig.update_layout(
-                **PLOTLY_TEMPLATE['layout'], height=500,
+            _layout(fig, height=500,
                 title="Größenunterschied Gewinner vs. Nicht-Gewinner (Top 15 Sportarten)",
                 xaxis_title="", yaxis_title="Größe (m)",
                 boxmode='group',
@@ -521,8 +522,7 @@ elif page == "⚖️ Körper & Medaillen":
                         marker_color=col, showlegend=(sport_name == top_sports_b[0]),
                         line_color=col,
                     ))
-            fig.update_layout(
-                **PLOTLY_TEMPLATE['layout'], height=500,
+            _layout(fig, height=500,
                 title="BMI-Unterschied Gewinner vs. Nicht-Gewinner (Top 15 Sportarten)",
                 xaxis_title="", yaxis_title="BMI",
                 boxmode='group',
@@ -555,8 +555,7 @@ elif page == "🌍 Geografie & Gleichstellung":
         ))
         fig.add_hline(y=50, line_dash='dash', line_color='#6B6B6B', annotation_text='50% Parität',
                       annotation_font_color='#6B6B6B')
-        fig.update_layout(
-            **PLOTLY_TEMPLATE['layout'], height=420,
+        _layout(fig, height=420,
             title="Frauenanteil bei den Olympischen Spielen im Zeitverlauf",
             xaxis_title="Jahr", yaxis_title="Frauenanteil (%)",
             yaxis=dict(range=[0, 60], gridcolor='#2a2a2a'),
@@ -567,8 +566,7 @@ elif page == "🌍 Geografie & Gleichstellung":
         fig2 = go.Figure()
         fig2.add_trace(go.Bar(x=gender_trend.index, y=gender_trend['M'], name='Männer', marker_color='#4A90D9'))
         fig2.add_trace(go.Bar(x=gender_trend.index, y=gender_trend['F'], name='Frauen', marker_color=GOLD))
-        fig2.update_layout(
-            **PLOTLY_TEMPLATE['layout'], height=350,
+        _layout(fig2, height=350,
             barmode='stack', title="Absolute Teilnehmerzahlen nach Geschlecht",
             xaxis_title="Jahr", yaxis_title="Athleten",
         )
@@ -598,9 +596,7 @@ elif page == "🌍 Geografie & Gleichstellung":
             zmin=0, zmax=70,
             colorbar=dict(title=dict(text='Frauenanteil (%)', font=dict(color='white')), tickfont=dict(color='white')),
         ))
-        fig.update_layout(
-            **PLOTLY_TEMPLATE['layout'],
-            title=f'Frauenanteil pro Land – Olympische Spiele {latest_year}',
+        _layout(fig, title=f'Frauenanteil pro Land – Olympische Spiele {latest_year}',
             height=550,
             geo=dict(
                 showframe=False, showcoastlines=True,
@@ -626,8 +622,7 @@ elif page == "🌍 Geografie & Gleichstellung":
                     mode='lines+markers', name=kontinent,
                     line=dict(width=2), marker=dict(size=5),
                 ))
-            fig.update_layout(
-                **PLOTLY_TEMPLATE['layout'], height=450,
+            _layout(fig, height=450,
                 title='Olympia-Athleten nach Kontinent im Zeitverlauf',
                 xaxis_title='Jahr', yaxis_title='Anzahl Athleten',
             )
@@ -648,8 +643,7 @@ elif page == "🌍 Geografie & Gleichstellung":
                     mode='lines+markers', name=kontinent,
                     line=dict(width=2), marker=dict(size=5),
                 ))
-            fig2.update_layout(
-                **PLOTLY_TEMPLATE['layout'], height=420,
+            _layout(fig2, height=420,
                 title='Performance Score pro 100 Athleten nach Kontinent',
                 xaxis_title='Jahr', yaxis_title='Score / 100 Athleten',
             )
@@ -699,8 +693,7 @@ elif page == "🏠 Heimvorteil":
                 x=subset_h['land'], y=subset_h['score_pro_100'],
                 name=label, marker_color=color, opacity=0.9,
             ))
-        fig.update_layout(
-            **PLOTLY_TEMPLATE['layout'], height=550,
+        _layout(fig, height=550,
             title='Heimvorteil: Performance Score vor, während und nach Ausrichtung',
             barmode='group', xaxis_title='', yaxis_title='Score pro 100 Athleten',
             xaxis=dict(tickangle=-45, gridcolor='#2a2a2a'),
@@ -724,8 +717,7 @@ elif page == "🏠 Heimvorteil":
                     showscale=False,
                 ),
             ))
-            fig2.update_layout(
-                **PLOTLY_TEMPLATE['layout'], height=380,
+            _layout(fig2, height=380,
                 title='Heimvorteil: Score-Differenz (Gastgeber – Vorherige Spiele)',
                 xaxis=dict(tickangle=-45, gridcolor='#2a2a2a'),
                 yaxis_title='Score-Differenz',
