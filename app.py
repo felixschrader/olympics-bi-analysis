@@ -462,7 +462,7 @@ elif page == "⚖️ Körper & Medaillen":
                     d = sub[sub['hat_medaille'] == hue]['age'].dropna()
                     if len(d) == 0: continue
                     fig.add_trace(go.Box(
-                        y=d, name=hue, x=[sport_name]*len(d),
+                        y=d, name=hue, x=[sport_name]*len(d), width=0.4,
                         marker_color=col, showlegend=(sport_name == top_sports[0]),
                         line_color=col,
                     ))
@@ -497,7 +497,7 @@ elif page == "⚖️ Körper & Medaillen":
                     d = sub[sub['hat_medaille'] == hue]['height'].dropna()
                     if len(d) == 0: continue
                     fig.add_trace(go.Box(
-                        y=d, name=hue, x=[sport_name]*len(d),
+                        y=d, name=hue, x=[sport_name]*len(d), width=0.4,
                         marker_color=col, showlegend=(sport_name == top_sports_h[0]),
                         line_color=col,
                     ))
@@ -526,7 +526,7 @@ elif page == "⚖️ Körper & Medaillen":
                     d = sub[sub['hat_medaille'] == hue]['bmi'].dropna()
                     if len(d) == 0: continue
                     fig.add_trace(go.Box(
-                        y=d, name=hue, x=[sport_name]*len(d),
+                        y=d, name=hue, x=[sport_name]*len(d), width=0.4,
                         marker_color=col, showlegend=(sport_name == top_sports_b[0]),
                         line_color=col,
                     ))
