@@ -456,21 +456,19 @@ elif page == "⚖️ Körper & Medaillen":
             colors_map = {'Medaille': GOLD, 'Keine Medaille': '#3A3A3A'}
 
             fig = go.Figure()
-            for sport_name in top_sports:
-                sub = df_plot[df_plot['sport'] == sport_name]
-                for hue, col in colors_map.items():
-                    d = sub[sub['hat_medaille'] == hue]['age'].dropna()
-                    if len(d) == 0: continue
-                    fig.add_trace(go.Box(
-                        y=d, name=hue, x=[sport_name]*len(d), width=0.4,
-                        marker_color=col, showlegend=(sport_name == top_sports[0]),
-                        line_color=col,
-                    ))
+            colors_map = {'Medaille': GOLD, 'Keine Medaille': '#AAAAAA'}
+            for hue, col in colors_map.items():
+                sub = df_plot[df_plot['hat_medaille'] == hue]
+                fig.add_trace(go.Box(
+                    x=sub['sport'], y=sub['age'],
+                    name=hue, marker_color=col, line_color=col,
+                    boxmean=False,
+                ))
             _layout(fig, height=600,
-                boxmode='group', boxgap=0.2, boxgroupgap=0.3,
+                boxmode='group',
                 title="Altersunterschied Gewinner vs. Nicht-Gewinner (Top 15 Sportarten)",
                 xaxis_title="", yaxis_title="Alter",
-                xaxis=dict(tickangle=-45, gridcolor='#2a2a2a'),
+                xaxis=dict(tickangle=-45, gridcolor='#E0D9CE', categoryorder='array', categoryarray=top_sports),
             )
             st.plotly_chart(fig, use_container_width=True)
 
@@ -490,21 +488,17 @@ elif page == "⚖️ Körper & Medaillen":
             df_plot_h = df_plot_h.merge(height_diff[['gruppe']], on='sport')
 
             fig = go.Figure()
-            for sport_name in top_sports_h:
-                sub = df_plot_h[df_plot_h['sport'] == sport_name]
-                for hue, col in {'Medaille': GOLD, 'Keine Medaille': '#3A3A3A'}.items():
-                    d = sub[sub['hat_medaille'] == hue]['height'].dropna()
-                    if len(d) == 0: continue
-                    fig.add_trace(go.Box(
-                        y=d, name=hue, x=[sport_name]*len(d), width=0.4,
-                        marker_color=col, showlegend=(sport_name == top_sports_h[0]),
-                        line_color=col,
-                    ))
+            for hue, col in {'Medaille': GOLD, 'Keine Medaille': '#AAAAAA'}.items():
+                sub = df_plot_h[df_plot_h['hat_medaille'] == hue]
+                fig.add_trace(go.Box(
+                    x=sub['sport'], y=sub['height'],
+                    name=hue, marker_color=col, line_color=col,
+                ))
             _layout(fig, height=600,
-                boxmode='group', boxgap=0.2, boxgroupgap=0.3,
+                boxmode='group',
                 title="Größenunterschied Gewinner vs. Nicht-Gewinner (Top 15 Sportarten)",
                 xaxis_title="", yaxis_title="Größe (m)",
-                xaxis=dict(tickangle=-45, gridcolor='#2a2a2a'),
+                xaxis=dict(tickangle=-45, gridcolor='#E0D9CE', categoryorder='array', categoryarray=top_sports_h),
             )
             st.plotly_chart(fig, use_container_width=True)
 
@@ -518,21 +512,17 @@ elif page == "⚖️ Körper & Medaillen":
             df_plot_b = df_plot_b.merge(bmi_diff[['gruppe']], on='sport')
 
             fig = go.Figure()
-            for sport_name in top_sports_b:
-                sub = df_plot_b[df_plot_b['sport'] == sport_name]
-                for hue, col in {'Medaille': GOLD, 'Keine Medaille': '#3A3A3A'}.items():
-                    d = sub[sub['hat_medaille'] == hue]['bmi'].dropna()
-                    if len(d) == 0: continue
-                    fig.add_trace(go.Box(
-                        y=d, name=hue, x=[sport_name]*len(d), width=0.4,
-                        marker_color=col, showlegend=(sport_name == top_sports_b[0]),
-                        line_color=col,
-                    ))
+            for hue, col in {'Medaille': GOLD, 'Keine Medaille': '#AAAAAA'}.items():
+                sub = df_plot_b[df_plot_b['hat_medaille'] == hue]
+                fig.add_trace(go.Box(
+                    x=sub['sport'], y=sub['bmi'],
+                    name=hue, marker_color=col, line_color=col,
+                ))
             _layout(fig, height=600,
-                boxmode='group', boxgap=0.2, boxgroupgap=0.3,
+                boxmode='group',
                 title="BMI-Unterschied Gewinner vs. Nicht-Gewinner (Top 15 Sportarten)",
                 xaxis_title="", yaxis_title="BMI",
-                xaxis=dict(tickangle=-45, gridcolor='#2a2a2a'),
+                xaxis=dict(tickangle=-45, gridcolor='#E0D9CE', categoryorder='array', categoryarray=top_sports_b),
             )
             st.plotly_chart(fig, use_container_width=True)
 
