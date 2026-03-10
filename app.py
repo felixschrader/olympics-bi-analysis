@@ -213,10 +213,16 @@ _AX = dict(gridcolor='#E0D9CE', zerolinecolor='#E0D9CE')
 PLOTLY_TEMPLATE = dict(layout=_BASE_LAYOUT)  # kept for reference
 
 def _layout(fig, **kw):
-    """Apply base layout, injecting axis styles unless overridden."""
-    kw.setdefault('xaxis', _AX)
-    kw.setdefault('yaxis', _AX)
-    fig.update_layout(**_BASE_LAYOUT, **kw)
+    """Apply base layout, merging dicts to avoid duplicate key errors."""
+    merged = {**_BASE_LAYOUT}
+    for k, v in kw.items():
+        if k in merged and isinstance(merged[k], dict) and isinstance(v, dict):
+            merged[k] = {**merged[k], **v}
+        else:
+            merged[k] = v
+    merged.setdefault('xaxis', _AX)
+    merged.setdefault('yaxis', _AX)
+    fig.update_layout(**merged)
 
 GOLD = '#B8860B'
 SILVER = '#A8A9AD'
@@ -458,7 +464,7 @@ elif page == "⚖️ Körper & Medaillen":
                     fig.add_trace(go.Box(
                         y=d, name=hue, x=[sport_name]*len(d),
                         marker_color=col, showlegend=(sport_name == top_sports[0]),
-                        line_color=col, fillcolor=col.replace('#', 'rgba(').rstrip(')')+',0.4)',
+                        line_color=col,
                     ))
             _layout(fig, height=500,
                 title="Altersunterschied Gewinner vs. Nicht-Gewinner (Top 15 Sportarten)",
