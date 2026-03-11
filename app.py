@@ -265,6 +265,20 @@ with st.sidebar:
     )
 
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:1.5px;color:#B8860B;margin-bottom:8px;font-weight:600;">Fragestellungen</div>
+    <div style="font-size:0.78rem;color:#555555;line-height:1.5;margin-bottom:6px;">
+        <strong style="color:#1A1A1A;">① Körper & Medaillen</strong><br>
+        Für Trainer: Welches körperliche Profil haben Gewinner – je nach Sportart und Geschlecht?
+    </div>
+    <div style="font-size:0.78rem;color:#555555;line-height:1.5;">
+        <strong style="color:#1A1A1A;">② Trends & Kuriositäten</strong><br>
+        Für Medien: Frauenanteil, Kontinentperformance, Heimvorteil – was steckt dahinter?
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
     year_range = st.slider(
         "Zeitraum",
         int(df['year'].min()), int(df['year'].max()),
@@ -275,7 +289,21 @@ with st.sidebar:
     sex_code = None if sex_filter == "Alle" else sex_filter[8]
 
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-    st.markdown('<div style="color:#888888;font-size:0.75rem">Daten: 1896 – 2016 · Sommer</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="font-size:0.72rem;color:#888888;line-height:1.6;">
+        Daten: 1896 – 2016 · Sommer
+    </div>
+    <div style="margin-top:12px;font-size:0.72rem;color:#888888;line-height:1.7;">
+        <a href="https://www.linkedin.com/in/felixschrader/" target="_blank"
+           style="color:#555555;text-decoration:none;font-weight:600;">Felix Schrader</a><br>
+        Übungsprojekt zur Vorbereitung auf das Abschlussprojekt<br>
+        <a href="https://www.linkedin.com/school/data-science-institute-weiterbildungen/" target="_blank"
+           style="color:#B8860B;text-decoration:none;">Data Science Institute by Fabianrappert</a>
+        <br><br>
+        <a href="https://github.com/felixschrader/olympics-bi-analysis" target="_blank"
+           style="color:#B8860B;text-decoration:none;">⌥ GitHub Repository</a>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Filter
 dff = df[(df['year'] >= year_range[0]) & (df['year'] <= year_range[1])]
@@ -288,6 +316,26 @@ if sex_code:
 if page == "🏠 Übersicht":
     st.markdown('<div class="page-title">OLYMPISCHE SPIELE</div>', unsafe_allow_html=True)
     st.markdown('<div class="page-subtitle">Historische Analyse 1896 – 2016</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="background:#FFFFFF;border:1px solid #E0D9CE;border-radius:12px;padding:20px 28px;margin-bottom:24px;">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#B8860B;margin-bottom:8px;font-weight:600;">Über dieses Dashboard</div>
+        <p style="margin:0 0 10px 0;font-size:0.92rem;line-height:1.6;color:#1A1A1A;">
+        Dieses Dashboard entstand als Übungsprojekt von
+        <a href="https://www.linkedin.com/in/felixschrader/" target="_blank" style="color:#B8860B;"><strong>Felix Schrader</strong></a> zur Vorbereitung auf das Abschlussprojekt
+        im Rahmen der Weiterbildung am
+        <a href="https://www.linkedin.com/school/data-science-institute-weiterbildungen/" target="_blank" style="color:#B8860B;">Data Science Institute by Fabianrappert</a>.
+        Es wertet olympische Athletendaten von 1896 bis 2016 aus und richtet sich an zwei Zielgruppen:
+        <strong>Trainer</strong>, die sportartspezifische Körperprofile einordnen wollen, und <strong>Medien</strong>,
+        die nach interessanten Trends rund um Olympia suchen.
+        </p>
+        <p style="margin:0;font-size:0.92rem;line-height:1.6;color:#888888;">
+        Quellcode:
+        <a href="https://github.com/felixschrader/olympics-bi-analysis" target="_blank" style="color:#B8860B;">github.com/felixschrader/olympics-bi-analysis</a>
+        &nbsp;·&nbsp; Navigation links führt durch die einzelnen Analysebereiche.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
     c1, c2, c3, c4 = st.columns(4)
     with c1:
@@ -355,6 +403,20 @@ if page == "🏠 Übersicht":
 elif page == "💪 Athletenprofil":
     st.markdown('<div class="page-title">ATHLETEN-IDEALWERTE</div>', unsafe_allow_html=True)
     st.markdown('<div class="page-subtitle">Körperliche Profile der Medaillengewinner nach Sportart</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="background:#FFFFFF;border:1px solid #E0D9CE;border-radius:12px;padding:20px 28px;margin-bottom:24px;">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#B8860B;margin-bottom:8px;font-weight:600;">🎯 Zielgruppe: Trainer &nbsp;·&nbsp; Fragestellung 1</div>
+        <p style="margin:0 0 10px 0;font-size:0.92rem;line-height:1.6;color:#1A1A1A;">
+        Welche körperlichen Merkmale zeichnen erfolgreiche Athleten in einer bestimmten Sportart aus?
+        Dieses Tool zeigt die Verteilungen von Größe, Gewicht, BMI und Alter der Medaillengewinner
+        im Vergleich zum Rest des Feldes – aufgeschlüsselt nach Sportart und Geschlecht.
+        </p>
+        <p style="margin:0;font-size:0.92rem;line-height:1.6;color:#888888;font-style:italic;">
+        Sportart und Geschlecht unten auswählen. Die Boxplots zeigen die Streuung, die Kennzahlen-Karten den Median der Gewinner.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
     col_s, col_g = st.columns([3, 1])
     with col_s:
@@ -428,6 +490,20 @@ elif page == "💪 Athletenprofil":
 elif page == "⚖️ Körper & Medaillen":
     st.markdown('<div class="page-title">KÖRPER & MEDAILLENERFOLG</div>', unsafe_allow_html=True)
     st.markdown('<div class="page-subtitle">Zusammenhang körperlicher Merkmale mit Medaillengewinn</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="background:#FFFFFF;border:1px solid #E0D9CE;border-radius:12px;padding:20px 28px;margin-bottom:24px;">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#B8860B;margin-bottom:8px;font-weight:600;">🎯 Zielgruppe: Trainer &nbsp;·&nbsp; Fragestellung 1</div>
+        <p style="margin:0 0 10px 0;font-size:0.92rem;line-height:1.6;color:#1A1A1A;">
+        Gibt es einen messbaren Zusammenhang zwischen körperlichem Profil und Medaillenerfolg?
+        Die Auswertung zeigt die <strong>15 Sportarten mit der größten Abweichung</strong> zwischen Gewinnern und Nicht-Gewinnern
+        – jeweils für Alter, Körpergröße und BMI.
+        </p>
+        <p style="margin:0;font-size:0.92rem;line-height:1.6;color:#888888;font-style:italic;">
+        Sportarten links vom Trennstrich: Gewinner tendieren zum höheren Wert. Rechts: Gewinner tendieren zum niedrigeren Wert.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
     tab1, tab2, tab3 = st.tabs(["🎂 Alter", "📏 Größe", "⚖️ BMI"])
 
@@ -573,6 +649,20 @@ elif page == "🌍 Geografie & Gleichstellung":
     st.markdown('<div class="page-title">GEOGRAFIE & GLEICHSTELLUNG</div>', unsafe_allow_html=True)
     st.markdown('<div class="page-subtitle">Frauenanteil und Teilnahme nach Region</div>', unsafe_allow_html=True)
 
+    st.markdown("""
+    <div style="background:#FFFFFF;border:1px solid #E0D9CE;border-radius:12px;padding:20px 28px;margin-bottom:24px;">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#B8860B;margin-bottom:8px;font-weight:600;">🎯 Zielgruppe: Medien &nbsp;·&nbsp; Fragestellung 2 – Kuriositäten & Trends</div>
+        <p style="margin:0 0 10px 0;font-size:0.92rem;line-height:1.6;color:#1A1A1A;">
+        Wie hat sich die Beteiligung von Frauen und verschiedenen Weltregionen über die Jahrzehnte entwickelt?
+        Drei Perspektiven: die historische Entwicklung des Frauenanteils, die geografische Verteilung beim letzten Olympia,
+        und die Effizienz einzelner Kontinente gemessen an ihrer Bevölkerungsgröße.
+        </p>
+        <p style="margin:0;font-size:0.92rem;line-height:1.6;color:#888888;font-style:italic;">
+        Passend zum Weltfrauentag: Der Frauenanteil bei Olympia hat sich von unter 5% (1900) auf fast 45% (2016) gesteigert – 50% sind aber noch nicht erreicht.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
     tab1, tab2, tab3 = st.tabs(["📈 Frauenanteil Trend", "🗺️ Weltkarte", "🌐 Kontinente"])
 
     with tab1:
@@ -691,6 +781,20 @@ elif page == "🌍 Geografie & Gleichstellung":
 elif page == "🏠 Heimvorteil":
     st.markdown('<div class="page-title">HEIMVORTEIL</div>', unsafe_allow_html=True)
     st.markdown('<div class="page-subtitle">Performance der Gastgeberländer vor, während und nach den Spielen</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="background:#FFFFFF;border:1px solid #E0D9CE;border-radius:12px;padding:20px 28px;margin-bottom:24px;">
+        <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:2px;color:#B8860B;margin-bottom:8px;font-weight:600;">🎯 Zielgruppe: Medien &nbsp;·&nbsp; Fragestellung 2 – Kuriositäten & Trends</div>
+        <p style="margin:0 0 10px 0;font-size:0.92rem;line-height:1.6;color:#1A1A1A;">
+        Profitieren Länder davon, die Olympischen Spiele im eigenen Land auszurichten?
+        Verglichen wird der gewichtete Performance Score (Gold=3, Silber=2, Bronze=1 pro 100 Athleten)
+        für jedes Gastgeberland <strong>vor</strong>, <strong>während</strong> und <strong>nach</strong> der Ausrichtung der Spiele.
+        </p>
+        <p style="margin:0;font-size:0.92rem;line-height:1.6;color:#888888;font-style:italic;">
+        Ergebnis: Bei rund zwei Dritteln der Gastgeberländer steigt der Score während der Heimspiele – der Effekt ist real, aber nicht universell.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
     medal_points = {'Gold': 3, 'Silver': 2, 'Bronze': 1}
     df_home_base = df.copy()
